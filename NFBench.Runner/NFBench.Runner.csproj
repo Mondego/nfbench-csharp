@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{41757C15-C7CF-4268-87CB-A89C8247A2A2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>NFBench.Runner</RootNamespace>
+    <AssemblyName>NFBench.Runner</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunBenchmark.cs" />
+    <Compile Include="ServiceProcessWrapper.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.Security\NFBench.Benchmark.Security.csproj">
+      <Project>{D3BC8295-BB5D-48D6-A69A-7298C09196CA}</Project>
+      <Name>NFBench.Benchmark.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NFBench.Services\NFBench.Services.ChatClient\NFBench.Services.ChatClient.csproj">
+      <Project>{E52E95F5-0597-4245-A43D-3296D0B0B466}</Project>
+      <Name>NFBench.Services.ChatClient</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFBench.Tests", "NFBench.Tests\NFBench.Tests.csproj", "{86537A9C-83B0-4622-8F77-80BAAB8B4495}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NFBench.Benchmark", "NFBench.Benchmark", "{8681DDB0-AB55-451F-B266-98504D54E32A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFBench.Benchmark.Security", "NFBench.Benchmark\NFBench.Benchmark.Security\NFBench.Benchmark.Security.csproj", "{D3BC8295-BB5D-48D6-A69A-7298C09196CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFBench.Runner", "NFBench.Runner\NFBench.Runner.csproj", "{41757C15-C7CF-4268-87CB-A89C8247A2A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NFBench.Services", "NFBench.Services", "{B51921FA-8D5D-4C96-99C0-3BD473F2AE3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFBench.Services.ChatClient", "NFBench.Services\NFBench.Services.ChatClient\NFBench.Services.ChatClient.csproj", "{E52E95F5-0597-4245-A43D-3296D0B0B466}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41757C15-C7CF-4268-87CB-A89C8247A2A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41757C15-C7CF-4268-87CB-A89C8247A2A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41757C15-C7CF-4268-87CB-A89C8247A2A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41757C15-C7CF-4268-87CB-A89C8247A2A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86537A9C-83B0-4622-8F77-80BAAB8B4495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86537A9C-83B0-4622-8F77-80BAAB8B4495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86537A9C-83B0-4622-8F77-80BAAB8B4495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86537A9C-83B0-4622-8F77-80BAAB8B4495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3BC8295-BB5D-48D6-A69A-7298C09196CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3BC8295-BB5D-48D6-A69A-7298C09196CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3BC8295-BB5D-48D6-A69A-7298C09196CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3BC8295-BB5D-48D6-A69A-7298C09196CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E52E95F5-0597-4245-A43D-3296D0B0B466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E52E95F5-0597-4245-A43D-3296D0B0B466}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E52E95F5-0597-4245-A43D-3296D0B0B466}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E52E95F5-0597-4245-A43D-3296D0B0B466}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D3BC8295-BB5D-48D6-A69A-7298C09196CA} = {8681DDB0-AB55-451F-B266-98504D54E32A}
+		{E52E95F5-0597-4245-A43D-3296D0B0B466} = {B51921FA-8D5D-4C96-99C0-3BD473F2AE3C}
+	EndGlobalSection
+EndGlobal
