@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Collections.Generic;
 
-namespace NFBench.Benchmark.Security
+namespace NFBench.Benchmark.Security.Buggy
 {
     public class BuggyApplicationServer
     {

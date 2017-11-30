@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace NFBench.Benchmark.Security
+namespace NFBench.Benchmark.Security.Control
 {
     public class ControlApplicationServer
     {

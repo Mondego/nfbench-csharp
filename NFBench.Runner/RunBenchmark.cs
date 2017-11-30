@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Reflection;
-
-using NFBench.Benchmark.Security;
-using NFBench.Services.ChatClient;
 using System.Threading.Tasks;
+
+using NFBench.Services.ChatClient;
+using NFBench.Benchmark.Security.Control;
+using NFBench.Benchmark.Security.Buggy;
 
 namespace NFBench.Runner
 {
@@ -18,24 +19,25 @@ namespace NFBench.Runner
 
                 switch (benchmarkName) {
                 case "security": 
-                    Console.WriteLine("Starting prototype security benchmark");
-                    // Console.WriteLine(Assembly.ReflectionOnlyLoad("NFBench.Services.ChatClient").Location);
+                    Console.WriteLine("Starting prototype security benchmark (WIP)");
+
+                    int controlPort = 60708;
+                    int buggyPort = 60808;
+
+                    string pathToControlLauncher = Assembly.ReflectionOnlyLoad("NFBench.Benchmark.Security.Control").Location;
+                    string pathToBuggyLauncher = Assembly.ReflectionOnlyLoad("NFBench.Benchmark.Security.Buggy").Location;
+
+                    ServiceProcessWrapper controlWrapper = new ServiceProcessWrapper(pathToControlLauncher, controlPort.ToString());
+                    ServiceProcessWrapper buggyWrapper = new ServiceProcessWrapper(pathToBuggyLauncher, buggyPort.ToString());
 
                     Task.Run(() => {
-                        ControlApplicationServer control = new ControlApplicationServer(60708);
-                        Console.WriteLine("Control server running at localhost:60708");
-                        control.start();
+                        controlWrapper.Start();
                     });
-                    
                     Task.Run(() => {
-                        BuggyApplicationServer buggy = new BuggyApplicationServer(60808);
-                        Console.WriteLine("Buggy server running at localhost:60808");
-                        buggy.start();
+                        buggyWrapper.Start();
                     });
-                   
-                    while (true) 
-                    {
-                    }
+
+                    while (true) { }
 
                     break;
                 default:

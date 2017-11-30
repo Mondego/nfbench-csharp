@@ -22,36 +22,42 @@ namespace NFBench.Runner
         /// <param name="workingdir">String path of where to execute the process (optional)</param>
         public ServiceProcessWrapper(string path, string arguments, string workingdir = null)
         {
-            executablePath = path;
+            try {
+                executablePath = path;
 
-            p = new Process();
-            p.StartInfo.FileName = executablePath;
-            p.StartInfo.Arguments = arguments;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardError = true;
+                p = new Process();
+                p.StartInfo.FileName = executablePath;
+                p.StartInfo.Arguments = arguments;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.RedirectStandardError = true;
 
-            if (workingdir != null) {
-                p.StartInfo.WorkingDirectory = workingdir;
+                if (workingdir != null) {
+                    p.StartInfo.WorkingDirectory = workingdir;
+                }
+
+                p.OutputDataReceived += delegate(object sender, DataReceivedEventArgs e) {
+                    if (e.Data.Length > 0)
+                    {
+                        Console.WriteLine("[PID {0} {1}] {2}", 
+                            p.Id, new FileInfo(path).Name,
+                            e.Data.ToString().Trim());
+                    }
+                };
+
+                p.ErrorDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e) {
+                    if (e.Data.Length > 0) {
+                        Console.WriteLine("[PID {0} {1}] {2}", 
+                            p.Id, new FileInfo(path).Name,
+                            e.Data.ToString().Trim());
+                    }
+                };
             }
 
-            p.OutputDataReceived += delegate(object sender, DataReceivedEventArgs e) {
-                if (e.Data.Length > 0)
-                {
-                    Console.WriteLine("[PID {0} {1}] {2}", 
-                        p.Id, new FileInfo(path).Name,
-                        e.Data.ToString().Trim());
-                }
-            };
-
-            p.ErrorDataReceived += delegate(object sender, System.Diagnostics.DataReceivedEventArgs e) {
-                if (e.Data.Length > 0) {
-                    Console.WriteLine("[PID {0} {1}] {2}", 
-                        p.Id, new FileInfo(path).Name,
-                        e.Data.ToString().Trim());
-                }
-            };
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
         }
 
         /// <summary>
@@ -60,13 +66,21 @@ namespace NFBench.Runner
         /// <param name="nSecondsWaitBeforeStart">Time to delay process start</param>
         public void Start(int nSecondsWaitBeforeStart = 0)
         {
-            if (nSecondsWaitBeforeStart > 0) {
-                Thread.Sleep(nSecondsWaitBeforeStart * 1000);
+            try 
+            {
+                if (nSecondsWaitBeforeStart > 0) {
+                    Thread.Sleep(nSecondsWaitBeforeStart * 1000);
+                }
 
                 p.Start();
                 p.BeginOutputReadLine();
                 p.BeginErrorReadLine();
                 ProcessStreamInterface = p.StandardInput;
+                Thread.Sleep(1000);
+            }
+
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
             }
         }
 
