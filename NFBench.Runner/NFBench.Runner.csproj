@@ -34,20 +34,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunBenchmark.cs" />
     <Compile Include="ServiceProcessWrapper.cs" />
+    <Compile Include="Services\TinyChatMessageService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\NFBench.Services\NFBench.Services.ChatClient\NFBench.Services.ChatClient.csproj">
-      <Project>{E52E95F5-0597-4245-A43D-3296D0B0B466}</Project>
-      <Name>NFBench.Services.ChatClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.Security\NFBench.Benchmark.Security.Control\NFBench.Benchmark.Security.Control.csproj">
-      <Project>{0A0CDD0F-E691-4D96-A636-68B2EA94E65F}</Project>
-      <Name>NFBench.Benchmark.Security.Control</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.Security\NFBench.Benchmark.Security.Buggy\NFBench.Benchmark.Security.Buggy.csproj">
-      <Project>{EE91A02A-BC82-40D3-A3F4-DCAECAC78874}</Project>
-      <Name>NFBench.Benchmark.Security.Buggy</Name>
-    </ProjectReference>
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>

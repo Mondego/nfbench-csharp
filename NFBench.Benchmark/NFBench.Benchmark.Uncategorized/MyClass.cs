@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NFBench.Tests
+namespace NFBench.Benchmark.Uncategorized
 {
     public class MyClass
     {

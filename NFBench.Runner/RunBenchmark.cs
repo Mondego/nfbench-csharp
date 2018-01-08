@@ -2,10 +2,6 @@
 using System.Reflection;
 using System.Threading.Tasks;
 
-using NFBench.Services.ChatClient;
-using NFBench.Benchmark.Security.Control;
-using NFBench.Benchmark.Security.Buggy;
-
 namespace NFBench.Runner
 {
     class MainClass

@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{65B2B34D-1B50-4FAF-B1F1-0E5261E20F6A}</ProjectGuid>
+    <ProjectGuid>{3CEE9DA1-D043-4EC3-B098-CCFB05ABA6F1}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>NFBench.Tests</RootNamespace>
-    <AssemblyName>NFBench.Tests</AssemblyName>
+    <RootNamespace>NFBench.Benchmark.Uncategorized</RootNamespace>
+    <AssemblyName>NFBench.Benchmark.Uncategorized</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -29,23 +29,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="nunit.framework">
-      <HintPath>..\tools\NUnit\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestBenchmarkUncategorized.cs" />
+    <Compile Include="ControlApplicationServer.cs" />
+    <Compile Include="SendMessageCallbackHandlingBug.cs" />
+    <Compile Include="ReceiveMessageCallbackListenFlagBug.cs" />
+    <Compile Include="ReceiveMessageCallbackConnectionEntryOverwriteBug.cs" />
+    <Compile Include="InitializationThreadsafeConnectionCollectionBug.cs" />
+    <Compile Include="StopListenerCloseBug.cs" />
+    <Compile Include="StopListenFlagBug.cs" />
+    <Compile Include="ReceiveMessageCallbackThreadingSetBug.cs" />
+    <Compile Include="ReceiveMessageCallbackSendMessageDestinationBug.cs" />
+    <Compile Include="InitializationListenerPortBug.cs" />
+    <Compile Include="StartLoopWaitOnThreadReleaseEventMissingBug.cs" />
+    <Compile Include="StartWhileTrueListenerBug.cs" />
+    <Compile Include="StartListenFlagNotInitBug.cs" />
+    <Compile Include="InitializationThreadBlockingEventBug.cs" />
+    <Compile Include="StartThreadEventResetInLoopBug.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.Uncategorized\NFBench.Benchmark.Uncategorized.csproj">
-      <Project>{3CEE9DA1-D043-4EC3-B098-CCFB05ABA6F1}</Project>
-      <Name>NFBench.Benchmark.Uncategorized</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFBench.Runner\NFBench.Runner.csproj">
-      <Project>{41757C15-C7CF-4268-87CB-A89C8247A2A2}</Project>
-      <Name>NFBench.Runner</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

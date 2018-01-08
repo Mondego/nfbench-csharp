@@ -1,11 +1,15 @@
-# NFBench - a test benchmark for non-functional requirements
+# NFBench-CSharp
 
-1. nuget restore
+NFBench --- A benchmark for non-functional requirements.
 
-2. ./build.sh
+## Dependencies 
 
-3. ./first-benchmark.sh
+Dependencies now handled through [Cake](https://cakebuild.net/)
 
-4. ./chat-service.sh 60708 to chat with cleaner version
+### Linux
 
-5. ./chat-service.sh 60808 to chat with buggy version (good luck have fun)
+$ ./build.sh
+
+### Windows
+
+./build.ps1
