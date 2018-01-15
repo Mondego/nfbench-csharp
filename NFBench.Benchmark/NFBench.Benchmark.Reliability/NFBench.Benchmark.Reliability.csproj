@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{41757C15-C7CF-4268-87CB-A89C8247A2A2}</ProjectGuid>
+    <ProjectGuid>{5AFB4258-9083-464A-955B-A2CA63F7231F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>NFBench.Runner</RootNamespace>
-    <AssemblyName>NFBench.Runner</AssemblyName>
+    <RootNamespace>NFBench.Benchmark.Reliability</RootNamespace>
+    <AssemblyName>NFBench.Benchmark.Reliability</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,32 +31,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RunBenchmark.cs" />
-    <Compile Include="ServiceProcessWrapper.cs" />
-    <Compile Include="Services\TinyChatMessageService.cs" />
-    <Compile Include="HeadlessBenchmarkWrapper.cs" />
+    <Compile Include="ReliabilityBugApplicationServer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.Performance\NFBench.Benchmark.Performance.csproj">
-      <Project>{C082A13B-009A-435B-9E68-C350A434034F}</Project>
-      <Name>NFBench.Benchmark.Performance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.ReferenceImplementation\NFBench.Benchmark.ReferenceImplementation.csproj">
+    <ProjectReference Include="..\NFBench.Benchmark.ReferenceImplementation\NFBench.Benchmark.ReferenceImplementation.csproj">
       <Project>{27F44601-5B25-466D-A3E5-B9FA89E32AFE}</Project>
       <Name>NFBench.Benchmark.ReferenceImplementation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.Reliability\NFBench.Benchmark.Reliability.csproj">
-      <Project>{5AFB4258-9083-464A-955B-A2CA63F7231F}</Project>
-      <Name>NFBench.Benchmark.Reliability</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NFBench.Benchmark\NFBench.Benchmark.Security\NFBench.Benchmark.Security.csproj">
-      <Project>{BF1148E3-0360-436D-AA8C-0C70877710C1}</Project>
-      <Name>NFBench.Benchmark.Security</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

@@ -40,9 +40,7 @@ namespace NFBench.Runner
                 p.OutputDataReceived += delegate(object sender, DataReceivedEventArgs e) {
                     if (e.Data.Length > 0)
                     {
-                        Console.WriteLine("[PID {0} {1}] {2}", 
-                            p.Id, new FileInfo(path).Name,
-                            e.Data.ToString().Trim());
+                        Console.WriteLine(e.Data.ToString().Trim());
                     }
                 };
 
