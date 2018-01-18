@@ -3,12 +3,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
-namespace NFBench.Runner
+namespace InternalTools
 {
     /// <summary>
     /// Process wrapper with redirected I/O stream
     /// </summary>
-    public class ServiceProcessWrapper
+    public class SystemProcessWithIOHandler
     {
         private Process p;
         private StreamWriter ProcessStreamInterface;
@@ -20,7 +20,7 @@ namespace NFBench.Runner
         /// <param name="path">String path of executable file</param>
         /// <param name="arguments">String combining arguments</param>
         /// <param name="workingdir">String path of where to execute the process (optional)</param>
-        public ServiceProcessWrapper(string path, string arguments, string workingdir = null)
+        public SystemProcessWithIOHandler(string path, string arguments, string workingdir = null)
         {
             try {
                 executablePath = path;

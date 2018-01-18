@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-using NFBench.Runner;
-using System.Diagnostics;
+using InternalTools;
 
 namespace NFBench.Tests
 {
@@ -15,41 +16,37 @@ namespace NFBench.Tests
         [Test]
         public void TestReferenceApplication()
         {
-            HeadlessBenchmarkWrapper hbw = new HeadlessBenchmarkWrapper(
-                "reference",
-                "127.0.0.1",
-                60708,
-                Utility.getReferencedAssemblyLocation("NFBench.Benchmark.ReferenceImplementation")
-            );
+            SystemProcessWithIOHandler referenceApp = 
+                new SystemProcessWithIOHandler(
+                    path: Assembly.ReflectionOnlyLoad("NFBench.Benchmark.ReferenceImplementation").Location,
+                    arguments: "reference 127.0.0.1 60708"                           
+                );
+            referenceApp.Start();
 
             int swarmCount = 10;
-            List<TestChatClient> swarm = new List<TestChatClient>();
-            for (int tccId = 0; tccId < swarmCount; tccId++) {
-                swarm.Add(new TestChatClient("127.0.0.1", 60708, tccId));
-            }
-            hbw.Start();
-            Thread.Sleep(3000);
-
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            foreach (TestChatClient tcc in swarm) {
-                Task.Run(() => {
-                    tcc.start();
-                });
-                Thread.Sleep(100);
+            List<SystemProcessWithIOHandler> swarm = new List<SystemProcessWithIOHandler>();
+            for (int i = 0; i < swarmCount; i++) {
+                swarm.Add(
+                    new SystemProcessWithIOHandler(
+                        path: Assembly.ReflectionOnlyLoad("TestClientApplications").Location,
+                        arguments: "127.0.0.1 60708 " + i                        
+                    )
+                );
             }
 
-            Thread.Sleep(swarmCount * swarmCount * 1000);
-            stopwatch.Stop();
-            Console.WriteLine("Time elapsed with set naps: {0}", stopwatch.Elapsed);
-
-            foreach (TestChatClient tcc in swarm) {
-                Task.Run(() => {
-                    tcc.stop();
-                });
+            foreach (SystemProcessWithIOHandler client in swarm) {
+                client.Start();
+                Thread.Sleep(500);
             }
-            hbw.Stop();
+
+            Console.WriteLine("Swarm started. Taking a nap for 5 seconds");
+            Thread.Sleep(5000);
+
+            // Cleanup
+            referenceApp.Stop();
+            foreach (SystemProcessWithIOHandler s in swarm) {
+                s.Stop();
+            }
         }
     }
 }

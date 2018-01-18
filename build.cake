@@ -15,6 +15,7 @@ var configuration = Argument("configuration", "Debug");
 // Define directories
 var root = Directory("./");
 var benchmarkRoot = root + Directory("NFBench.Benchmark");
+var executionToolsRoot = root + Directory("NFBench.Execution");
 
 // Benchmark Applications
 var benchmarkSecurityBinDir = benchmarkRoot + Directory("NFBench.Benchmark.Security/bin") + Directory(configuration);
@@ -23,8 +24,11 @@ var benchmarkPerformanceBinDir = benchmarkRoot + Directory("NFBench.Benchmark.Pe
 var benchmarkReferenceImplementationBinDir = benchmarkRoot + Directory("NFBench.Benchmark.ReferenceImplementation/bin/") + Directory(configuration);
 
 // Tooling
+var internalToolsBinDir = executionToolsRoot + Directory("InternalTools/bin") + Directory(configuration);
+var testClientApplicationsBinDir = executionToolsRoot + Directory("TestClientApplications/bin") + Directory(configuration);
+
+// Tests
 var benchmarkTestDir = root + Directory("./NFBench.Tests/bin/") + Directory(configuration);
-var benchmarkRunnerBuildDir = root + Directory("./NFBench.Runner/bin/") + Directory(configuration);
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -38,7 +42,9 @@ Task("Clean")
     CleanDirectory(benchmarkReliabilityBinDir);
     CleanDirectory(benchmarkPerformanceBinDir);
 
-    CleanDirectory(benchmarkRunnerBuildDir);
+    CleanDirectory(internalToolsBinDir);
+    CleanDirectory(testClientApplicationsBinDir);
+
     CleanDirectory(benchmarkTestDir);
 });
 
