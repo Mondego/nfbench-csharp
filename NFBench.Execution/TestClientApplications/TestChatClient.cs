@@ -4,6 +4,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
+using InternalTools;
+
 namespace TestClientApplications
 {
     public class TestChatClient
@@ -31,9 +33,10 @@ namespace TestClientApplications
             Task.Run(() => {
                 while (running) {
                     string message = Console.ReadLine();
+
                     if (message.Length > 0) {
                         byte[] datagram = Encoding.ASCII.GetBytes(message);
-                        Console.WriteLine("[#{0}-{1}] --> {2}",  mId, mEndpointInfo, message);
+                        Console.WriteLine("[#{0}] sent {2}",  mId, mEndpointInfo, message);
                         mClient.BeginSend(
                             datagram, 
                             datagram.Length, 
@@ -53,7 +56,7 @@ namespace TestClientApplications
             }
         }
 
-        private void ReceiveAsyncMessage(IAsyncResult ar)
+        protected void ReceiveAsyncMessage(IAsyncResult ar)
         {
             if (running == false)
                 return;
@@ -61,7 +64,7 @@ namespace TestClientApplications
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
             byte[] messageBuffer = ((UdpClient)ar.AsyncState).EndReceive(ar, ref endPoint);
             string messageText = Encoding.ASCII.GetString(messageBuffer, 0, messageBuffer.Length);
-            Console.WriteLine("[#{0}-{1}] <-- {2}",  mId, mEndpointInfo, messageText);
+            Console.WriteLine("[#{0}] received {2}",  mId, mEndpointInfo, messageText);
             mClient.BeginReceive(new AsyncCallback(ReceiveAsyncMessage), mClient);
         }
 

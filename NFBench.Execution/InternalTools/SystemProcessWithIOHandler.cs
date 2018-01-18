@@ -10,7 +10,7 @@ namespace InternalTools
     /// </summary>
     public class SystemProcessWithIOHandler
     {
-        private Process p;
+        public Process p { get; }
         private StreamWriter ProcessStreamInterface;
         private string executablePath;
 

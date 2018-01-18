@@ -5,11 +5,14 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
+using InternalTools;
+
 namespace NFBench.Benchmark.ReferenceImplementation
 {
     public class ReferenceApplicationServer
     {
         protected ConcurrentDictionary<string, IPEndPoint> mConnections;
+        protected ConcurrentDictionary<int, string> mConnectionIds;
         protected bool listening = false;
         protected UdpClient listener;
         protected string mEndpointInfo;
@@ -20,6 +23,7 @@ namespace NFBench.Benchmark.ReferenceImplementation
         {
             listener = new UdpClient(new IPEndPoint(IPAddress.Parse(hostname), port));
             mConnections = new ConcurrentDictionary<string, IPEndPoint>();
+            mConnectionIds = new ConcurrentDictionary<int, string>();
             mEndpointInfo = ((IPEndPoint)listener.Client.LocalEndPoint).ToString();
             mHostname = hostname;
             mPort = port;
@@ -71,13 +75,14 @@ namespace NFBench.Benchmark.ReferenceImplementation
 
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, 0);
                 byte[] messageBuffer = ((UdpClient)ar.AsyncState).EndReceive(ar, ref endPoint);
-                string message = Encoding.ASCII.GetString(messageBuffer);
+                string received = Encoding.ASCII.GetString(messageBuffer);
 
-                //debugMessage("received message: " + message + " from " + endPoint.ToString());
                 mConnections.TryAdd(
                     endPoint.ToString(), 
                     new IPEndPoint(endPoint.Address, endPoint.Port));
-                processMessageContent(message);
+
+                processMessage(received, endPoint.ToString());
+
                 listener.BeginReceive(new AsyncCallback(receiveMessageCallback), listener);
             }
 
@@ -86,25 +91,69 @@ namespace NFBench.Benchmark.ReferenceImplementation
             }
         }
 
-        protected virtual void processMessageContent(string msg)
+        protected virtual void processMessage(string message, string endp)
         {
-            byte[] buffer = Encoding.ASCII.GetBytes(msg);
+            if (message[0] == '@') {
+                int senderId = (int)Int64.Parse(message.Split(new char[] { ' ' }, 3)[1].Remove(0, 1));
+                mConnectionIds.TryAdd(senderId, endp);
+                handlePrivateMessage(message, senderId);
+            }
+            else
+            {
+                int senderId = (int)Int64.Parse(message.Split(new char[] { ' ' }, 2)[0].Remove(0, 1));
+                mConnectionIds.TryAdd(senderId, endp);
+                handleBroadcastMessage(message, senderId);
+            }
+        }
 
-            // PM
-            if (msg[0] == '@') {
+        protected virtual void handlePrivateMessage(string message, int sentBy)
+        {
+            int pmUid = 
+                (int)Int64.Parse(
+                    message.Split(new char[] { ' ' }, 2)[0]
+                    .Remove(0, 1));
 
+            if (mConnectionIds.ContainsKey(pmUid)) {
+                IPEndPoint pmDestination = mConnections[mConnectionIds[pmUid]];
+                byte[] buffer = Encoding.ASCII.GetBytes(message);
+                listener.BeginSend(
+                    buffer,
+                    buffer.Length,
+                    pmDestination,
+                    new AsyncCallback((IAsyncResult iar) => {
+                        int bytes = listener.EndSend(iar);
+                    }),
+                    listener
+                );
             } else {
-                foreach (var endp in mConnections) {
-                    listener.BeginSend(
-                        buffer,
-                        buffer.Length,
-                        endp.Value,
-                        new AsyncCallback((IAsyncResult iar) => {
-                            int bytes = listener.EndSend(iar);
-                        }),
-                        listener
-                    );
-                }
+                IPEndPoint destination = mConnections[mConnectionIds[sentBy]];
+                byte[] buffer = Encoding.ASCII.GetBytes("[Failed Delivery] " + message);
+                listener.BeginSend(
+                    buffer,
+                    buffer.Length,
+                    destination,
+                    new AsyncCallback((IAsyncResult iar) => {
+                        int bytes = listener.EndSend(iar);
+                    }),
+                    listener
+                );
+            }
+        }
+
+        protected virtual void handleBroadcastMessage(string message, int sentBy)
+        {
+            byte[] buffer = Encoding.ASCII.GetBytes(message);
+
+            foreach (var endp in mConnections) {
+                listener.BeginSend(
+                    buffer,
+                    buffer.Length,
+                    endp.Value,
+                    new AsyncCallback((IAsyncResult iar) => {
+                        int bytes = listener.EndSend(iar);
+                    }),
+                    listener
+                );
             }
         }
 

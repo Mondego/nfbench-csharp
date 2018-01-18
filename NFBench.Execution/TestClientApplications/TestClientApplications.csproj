@@ -36,4 +36,14 @@
     <Compile Include="TestChatClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\NFBench.Benchmark\NFBench.Benchmark.ReferenceImplementation\NFBench.Benchmark.ReferenceImplementation.csproj">
+      <Project>{27F44601-5B25-466D-A3E5-B9FA89E32AFE}</Project>
+      <Name>NFBench.Benchmark.ReferenceImplementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InternalTools\InternalTools.csproj">
+      <Project>{9EA2872F-EE34-4FF9-A100-44CCAE1C852B}</Project>
+      <Name>InternalTools</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

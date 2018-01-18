@@ -36,4 +36,10 @@
     <Compile Include="ReferenceApplicationServer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\NFBench.Execution\InternalTools\InternalTools.csproj">
+      <Project>{9EA2872F-EE34-4FF9-A100-44CCAE1C852B}</Project>
+      <Name>InternalTools</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
