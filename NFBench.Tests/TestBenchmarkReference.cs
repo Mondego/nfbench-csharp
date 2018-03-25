@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-
-using NUnit.Framework;
-
 using InternalTools;
+using NUnit.Framework;
+using DeepTestFramework;
 
 namespace NFBench.Tests
 {
@@ -16,39 +15,36 @@ namespace NFBench.Tests
         [Test]
         public void TestReferenceApplication()
         {
-            SystemProcessWithIOHandler referenceApp = 
-                new SystemProcessWithIOHandler(
-                    path: Assembly.ReflectionOnlyLoad("NFBench.Benchmark.ReferenceImplementation").Location,
-                    arguments: "reference 127.0.0.1 60708"                           
-                );
-            referenceApp.Start();
+            SystemUnderTestDeploymentAPI Driver = new SystemUnderTestDeploymentAPI();
+            InstrumentationAPI Instrumentation = new InstrumentationAPI();
 
-            int swarmCount = 3;
-            List<SystemProcessWithIOHandler> swarm = new List<SystemProcessWithIOHandler>();
-            for (int i = 0; i < swarmCount; i++) {
-                swarm.Add(
-                    new SystemProcessWithIOHandler(
-                        path: Assembly.ReflectionOnlyLoad("TestClientApplications").Location,
-                        arguments: "127.0.0.1 60708 " + i
-                    )
-                );
-            }
+            // Deployment prep
+            string referenceApplicationPath =
+                Assembly.ReflectionOnlyLoad("NFBench.Benchmark.ReferenceImplementation").Location;
+            string referenceApplicationArgumentString = "reference 127.0.0.1 60708";
+            string testClientApplicationPath = Assembly.ReflectionOnlyLoad("TestClientApplications").Location;
+            string client1Arguments = "127.0.0.1 60708 1";
+            string client2Arguments = "127.0.0.1 60708 2";
 
-            for (int i = 0; i < swarmCount; i++) {
-                swarm[i].Start();
-                Thread.Sleep(500);
-                swarm[i].SendMessageToProcessConsole("#" + i + " Hello World");
-            }
+            // Instrumentation
+            // Instrumentation points in ReferenceApplicationServer
+            // * 
+            // * stopwatch: receiveMessageCallback -> endSendMessageCallback
+            // * nMessagesSent & nMessagesReceived value capture
 
-            swarm[2].SendMessageToProcessConsole("@1 #2 Private message for @1");
-            swarm[2].SendMessageToProcessConsole("@7 #2 Private message for @7");
+            // Test
+            using (SystemProcessWrapperWithInput sut = Driver.ExecuteWithArguments(referenceApplicationPath, referenceApplicationArgumentString))  
+            using (SystemProcessWrapperWithInput client1 = Driver.ExecuteWithArguments(testClientApplicationPath, client1Arguments))
+            using (SystemProcessWrapperWithInput client2 = Driver.ExecuteWithArguments(testClientApplicationPath, client2Arguments))
+            {
+                client1.ConsoleInput("#1 Hello World");
+                client2.ConsoleInput("#2 Hello World");
 
-            Thread.Sleep(5000);
+                client1.ConsoleInput("@2 #1 Private message for @2");
+                client1.ConsoleInput("@7 #1 Private message for @7");
 
-            // Cleanup
-            referenceApp.Stop();
-            foreach (SystemProcessWithIOHandler s in swarm) {
-                s.Stop();
+                // Assert.AreEqual(0, Driver.captureValue(snapshotNMessagesSent));
+                Thread.Sleep(5000);
             }
         }
     }

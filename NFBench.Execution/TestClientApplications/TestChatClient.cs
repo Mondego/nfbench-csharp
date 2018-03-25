@@ -28,6 +28,7 @@ namespace TestClientApplications
 
         public void start()
         {
+            Console.WriteLine("Starting TestChatClient #{0} at {1}", mId, mEndpointInfo);
             running = true;
 
             Task.Run(() => {

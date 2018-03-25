@@ -1,0 +1,3 @@
+[submodule "lib/deeptest"]
+	path = lib/deeptest
+	url = https://github.com/Mondego/DEEPTest.git

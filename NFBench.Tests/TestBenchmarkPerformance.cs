@@ -11,7 +11,7 @@ namespace NFBench.Tests
 {
     public class TestBenchmarkPerformance
     {
-        [Test]
+        //[Test]
         public void TestBuggyPerformanceApplication()
         {
             SystemProcessWithIOHandler buggyPerformanceApp = 

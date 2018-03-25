@@ -8,8 +8,5 @@ Dependencies now handled through [Cake](https://cakebuild.net/)
 
 ### Linux
 
+$ ./prebuild.sh
 $ ./build.sh
-
-### Windows
-
-./build.ps1

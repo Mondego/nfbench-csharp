@@ -18,6 +18,8 @@ namespace NFBench.Benchmark.ReferenceImplementation
         protected string mEndpointInfo;
         protected string mHostname;
         protected int mPort;
+        protected int nMessagesSent = 0;
+        protected int nMessagesReceived = 0;
 
         public ReferenceApplicationServer(string hostname, int port)
         {
@@ -81,6 +83,7 @@ namespace NFBench.Benchmark.ReferenceImplementation
                     endPoint.ToString(), 
                     new IPEndPoint(endPoint.Address, endPoint.Port));
 
+                nMessagesReceived += 1;
                 processMessage(received, endPoint.ToString());
 
                 listener.BeginReceive(new AsyncCallback(receiveMessageCallback), listener);
@@ -116,25 +119,23 @@ namespace NFBench.Benchmark.ReferenceImplementation
             if (mConnectionIds.ContainsKey(pmUid)) {
                 IPEndPoint pmDestination = mConnections[mConnectionIds[pmUid]];
                 byte[] buffer = Encoding.ASCII.GetBytes(message);
+                nMessagesSent += 1;
                 listener.BeginSend(
                     buffer,
                     buffer.Length,
                     pmDestination,
-                    new AsyncCallback((IAsyncResult iar) => {
-                        int bytes = listener.EndSend(iar);
-                    }),
+                    new AsyncCallback(endSendMessageCallback),
                     listener
                 );
             } else {
                 IPEndPoint destination = mConnections[mConnectionIds[sentBy]];
                 byte[] buffer = Encoding.ASCII.GetBytes("[Failed Delivery] " + message);
+                nMessagesSent += 1;
                 listener.BeginSend(
                     buffer,
                     buffer.Length,
                     destination,
-                    new AsyncCallback((IAsyncResult iar) => {
-                        int bytes = listener.EndSend(iar);
-                    }),
+                    new AsyncCallback(endSendMessageCallback),
                     listener
                 );
             }
@@ -145,16 +146,20 @@ namespace NFBench.Benchmark.ReferenceImplementation
             byte[] buffer = Encoding.ASCII.GetBytes(message);
 
             foreach (var endp in mConnections) {
+                nMessagesSent += 1;
                 listener.BeginSend(
                     buffer,
                     buffer.Length,
                     endp.Value,
-                    new AsyncCallback((IAsyncResult iar) => {
-                        int bytes = listener.EndSend(iar);
-                    }),
+                    new AsyncCallback(endSendMessageCallback),
                     listener
                 );
             }
+        }
+
+        protected virtual void endSendMessageCallback(IAsyncResult ar)
+        {
+            int bytes = listener.EndSend(ar);
         }
 
         public void stop()
